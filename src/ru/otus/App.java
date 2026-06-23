@@ -25,36 +25,68 @@ public class App {
 
             switch (command) {
                 case ADD:
-                    System.out.print("Какое животное (cat/dog/duck): ");
-                    String typeInput = scanner.nextLine().trim().toUpperCase();
                     AnimalType animalType;
-                    try {
-                        animalType = AnimalType.valueOf(typeInput);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Неизвестный тип животного. Используйте cat, dog или duck.");
-                        continue;
+                    while (true) {
+                        System.out.print("Какое животное (cat/dog/duck): ");
+                        String typeInput = scanner.nextLine().trim().toUpperCase();
+                        try {
+                            animalType = AnimalType.valueOf(typeInput);
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Неизвестный тип животного. Используйте cat, dog или duck.");
+                        }
                     }
 
                     System.out.print("Имя: ");
                     String name = scanner.nextLine().trim();
-                    System.out.print("Возраст: ");
-                    int age = Integer.parseInt(scanner.nextLine().trim());
-                    System.out.print("Вес: ");
-                    double weight = Double.parseDouble(scanner.nextLine().trim());
-                    System.out.print("Цвет (BLACK, WHITE, GRAY, RED, BROWN, YELLOW, GREEN, BLUE): ");
-                    String colorInput = scanner.nextLine().trim().toUpperCase();
+
+                    int age;
+                    while (true) {
+                        System.out.print("Возраст: ");
+                        String ageInput = scanner.nextLine().trim();
+                        try {
+                            age = Integer.parseInt(ageInput);
+                            if (age < 0) {
+                                System.out.println("Ошибка: возраст не может быть отрицательным.");
+                                continue;
+                            }
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Ошибка: введите целое число.");
+                        }
+                    }
+
+                    double weight;
+                    while (true) {
+                        System.out.print("Вес: ");
+                        String weightInput = scanner.nextLine().trim();
+                        try {
+                            weight = Double.parseDouble(weightInput);
+                            if (weight < 0) {
+                                System.out.println("Ошибка: вес не может быть отрицательным.");
+                                continue;
+                            }
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Ошибка: введите число (например 4.5).");
+                        }
+                    }
+
                     Color color;
-                    try {
-                        color = Color.valueOf(colorInput);
-                    } catch (IllegalArgumentException e) {
-                        System.out.println("Неизвестный цвет. Используйте один из: BLACK, WHITE, GRAY, RED, BROWN, YELLOW, GREEN, BLUE.");
-                        continue;
+                    while (true) {
+                        System.out.print("Цвет (BLACK, WHITE, GRAY, RED, BROWN, YELLOW, GREEN, BLUE): ");
+                        String colorInput = scanner.nextLine().trim().toUpperCase();
+                        try {
+                            color = Color.valueOf(colorInput);
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Неизвестный цвет. Используйте один из: BLACK, WHITE, GRAY, RED, BROWN, YELLOW, GREEN, BLUE.");
+                        }
                     }
 
                     Animal animal = AnimalFactory.createAnimal(
                             animalType, name, age, weight, color
                     );
-
 
                     animals.add(animal);
                     animal.say();
