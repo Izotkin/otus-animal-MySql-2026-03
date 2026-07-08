@@ -1,6 +1,7 @@
 package ru.otus.animals.birds;
 
 import ru.otus.animals.Animal;
+import ru.otus.factory.AnimalType;
 import ru.otus.animals.Color;
 
 public class Duck extends Animal implements Flying {
@@ -16,5 +17,10 @@ public class Duck extends Animal implements Flying {
     @Override
     public void fly() {
         System.out.println("Я лечу");
+    }
+
+    @Override
+    public AnimalType getAnimalType() {
+        return AnimalType.DUCK;
     }
 }
