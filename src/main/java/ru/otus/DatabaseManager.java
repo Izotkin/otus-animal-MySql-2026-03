@@ -105,7 +105,7 @@ public class DatabaseManager {
             pstmt.setString(4, color.toUpperCase());
             pstmt.setInt(5, id);
             int rows = pstmt.executeUpdate();
-            System.out.println(rows > 0 ? "✓ Обновлено!" : "ID " + id + " не найден");
+            System.out.println(rows > 0 ? "Обновлено!" : "ID " + id + " не найден");
         } catch (SQLException e) {
             System.err.println("Ошибка обновления: " + e.getMessage());
         }
