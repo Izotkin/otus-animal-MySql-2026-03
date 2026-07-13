@@ -5,6 +5,7 @@ import ru.otus.animals.Color;
 import ru.otus.factory.AnimalFactory;
 import ru.otus.factory.AnimalType;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -12,39 +13,45 @@ public class App {
     private static DatabaseManager db = new DatabaseManager();
 
     public static void main(String[] args) {
+        try {
+            db.connect();
 
-        List<Animal> animals = db.loadAllAnimals();
-        System.out.println("Загружено животных из БД: " + animals.size());
+            List<Animal> animals = db.loadAllAnimals();
+            System.out.println("Загружено животных из БД: " + animals.size());
 
-        Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            System.out.print("\nВведите команду (add/list/update/delete/filter/exit): ");
-            String input = scanner.nextLine().trim().toUpperCase();
+            while (true) {
+                System.out.print("\nВведите команду (add/list/update/delete/filter/exit): ");
+                String input = scanner.nextLine().trim().toUpperCase();
 
-            switch (input) {
-                case "ADD":
-                    addAnimal(animals, scanner);
-                    break;
-                case "LIST":
-                    listAnimals(animals);
-                    break;
-                case "UPDATE":
-                    updateAnimal(animals, scanner);
-                    break;
-                case "DELETE":
-                    deleteAnimal(animals, scanner);
-                    break;
-                case "FILTER":
-                    filterAnimals(scanner);
-                    break;
-                case "EXIT":
-                    System.out.println("Выход.");
-                    scanner.close();
-                    return;
-                default:
-                    System.out.println("Неизвестная команда.");
+                switch (input) {
+                    case "ADD":
+                        addAnimal(animals, scanner);
+                        break;
+                    case "LIST":
+                        listAnimals(animals);
+                        break;
+                    case "UPDATE":
+                        updateAnimal(animals, scanner);
+                        break;
+                    case "DELETE":
+                        deleteAnimal(animals, scanner);
+                        break;
+                    case "FILTER":
+                        filterAnimals(scanner);
+                        break;
+                    case "EXIT":
+                        System.out.println("Выход.");
+                        scanner.close();
+                        db.disconnect();
+                        return;
+                    default:
+                        System.out.println("Неизвестная команда.");
+                }
             }
+        } catch (SQLException e) {
+            System.err.println("Ошибка подключения к БД: " + e.getMessage());
         }
     }
 
